@@ -9,6 +9,10 @@ interface CommentPopoverProps {
   onReply: (content: string) => void;
   darkMode: boolean;
   position?: PopoverPosition;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  onEngage?: () => void;
+  onDisengage?: () => void;
 }
 
 export function CommentPopover({
@@ -16,12 +20,27 @@ export function CommentPopover({
   onReply,
   darkMode,
   position = { side: "right", above: false },
+  onMouseEnter,
+  onMouseLeave,
+  onEngage,
+  onDisengage,
 }: CommentPopoverProps) {
   const [showReplyInput, setShowReplyInput] = useState(false);
 
   const handleReply = (content: string) => {
     onReply(content);
     setShowReplyInput(false);
+    onDisengage?.();
+  };
+
+  const handleExpand = () => {
+    setShowReplyInput(true);
+    onEngage?.();
+  };
+
+  const handleCancel = () => {
+    setShowReplyInput(false);
+    onDisengage?.();
   };
 
   // Build position classes based on calculated position
@@ -42,6 +61,8 @@ export function CommentPopover({
       }`}
       style={verticalStyle}
       onClick={(e) => e.stopPropagation()}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {/* Thread content */}
       <div className={`dc-max-h-64 dc-overflow-y-auto ${darkMode ? "dc-scrollbar-thin-dark" : "dc-scrollbar-thin"}`}>
@@ -57,13 +78,13 @@ export function CommentPopover({
       }`}>
         <CommentInput
           onSubmit={handleReply}
-          onCancel={() => setShowReplyInput(false)}
+          onCancel={handleCancel}
           placeholder="Write a reply..."
           autoFocus={showReplyInput}
           compact
           inline
           collapsed={!showReplyInput}
-          onExpand={() => setShowReplyInput(true)}
+          onExpand={handleExpand}
           darkMode={darkMode}
         />
       </div>

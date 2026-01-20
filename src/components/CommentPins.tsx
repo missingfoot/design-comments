@@ -55,6 +55,8 @@ interface CommentPinsProps {
   darkMode: boolean;
 }
 
+const HOVER_CLOSE_DELAY = 150; // ms delay before closing popover on mouse leave
+
 export function CommentPins({
   threads,
   positions,
@@ -64,7 +66,63 @@ export function CommentPins({
   darkMode,
 }: CommentPinsProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [engagedId, setEngagedId] = useState<string | null>(null); // tracks if user is interacting with popover
   const containerRef = useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clear timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleMouseEnterPin = (threadId: string) => {
+    // Cancel any pending close
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setHoveredId(threadId);
+  };
+
+  const handleMouseLeavePin = (threadId: string) => {
+    // Don't close if user is engaged (focused on reply input)
+    if (engagedId === threadId) return;
+
+    // Delay closing to allow mouse to travel to popover
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredId((current) => (current === threadId ? null : current));
+    }, HOVER_CLOSE_DELAY);
+  };
+
+  const handleMouseEnterPopover = (_threadId: string) => {
+    // Cancel any pending close - mouse made it to the popover
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+  };
+
+  const handleMouseLeavePopover = (threadId: string) => {
+    // Don't close if user is engaged (focused on reply input)
+    if (engagedId === threadId) return;
+
+    // Close immediately when leaving popover (unless going back to pin)
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredId((current) => (current === threadId ? null : current));
+    }, HOVER_CLOSE_DELAY);
+  };
+
+  const handlePopoverEngage = (threadId: string) => {
+    setEngagedId(threadId);
+  };
+
+  const handlePopoverDisengage = (threadId: string) => {
+    setEngagedId((current) => (current === threadId ? null : current));
+  };
 
   // Close popover when clicking outside
   useEffect(() => {
@@ -117,8 +175,8 @@ export function CommentPins({
             {/* Pin marker */}
             <button
               onClick={() => onSelect(isSelected ? null : thread.id)}
-              onMouseEnter={() => setHoveredId(thread.id)}
-              onMouseLeave={() => setHoveredId(null)}
+              onMouseEnter={() => handleMouseEnterPin(thread.id)}
+              onMouseLeave={() => handleMouseLeavePin(thread.id)}
               className={`
                 dc-w-7 dc-h-7 dc-rounded-full dc-flex dc-items-center dc-justify-center
                 dc-text-white dc-text-xs dc-font-medium dc-shadow-lg
@@ -139,6 +197,10 @@ export function CommentPins({
                 onReply={(content) => onReply(thread.id, content)}
                 darkMode={darkMode}
                 position={calculatePopoverPosition(pos.x, pos.y - window.scrollY)}
+                onMouseEnter={() => handleMouseEnterPopover(thread.id)}
+                onMouseLeave={() => handleMouseLeavePopover(thread.id)}
+                onEngage={() => handlePopoverEngage(thread.id)}
+                onDisengage={() => handlePopoverDisengage(thread.id)}
               />
             )}
           </div>
