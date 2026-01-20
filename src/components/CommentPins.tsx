@@ -10,20 +10,20 @@ interface Position {
 
 export interface PopoverPosition {
   side: "left" | "right";
-  bottom: number | null; // if set, use bottom positioning instead of top
+  above: boolean; // if true, popover appears above the pin using translateY(-100%)
 }
 
 const POPOVER_WIDTH = 288; // dc-w-72 = 18rem = 288px
-const POPOVER_MAX_HEIGHT = 350; // max possible height
 const MARGIN = 16; // margin from viewport edges
+const MIN_SPACE_BELOW = 200; // minimum space needed below before flipping above
 
 /**
  * Calculate optimal popover position to keep it within viewport
- * Popover top aligns with pin by default, shifts up if would go off bottom
+ * Uses height-agnostic positioning with translateY(-100%) for above placement
  */
 function calculatePopoverPosition(pinX: number, pinY: number): PopoverPosition {
   const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
+  const viewportHeight = window.visualViewport?.height || window.innerHeight;
 
   // Determine horizontal side
   const spaceOnRight = viewportWidth - pinX;
@@ -33,13 +33,16 @@ function calculatePopoverPosition(pinX: number, pinY: number): PopoverPosition {
     spaceOnLeft >= POPOVER_WIDTH + MARGIN ? "left" :
     spaceOnRight >= spaceOnLeft ? "right" : "left";
 
-  // Check if popover would go off bottom
-  // Top of popover aligns with pin, so bottom would be at pinY + POPOVER_MAX_HEIGHT
-  const wouldOverflowBottom = pinY + POPOVER_MAX_HEIGHT > viewportHeight - MARGIN;
+  // Check available space below and above
+  const spaceBelow = viewportHeight - pinY - MARGIN;
+  const spaceAbove = pinY - MARGIN;
+
+  // Go above if not enough space below and more space above
+  const above = spaceBelow < MIN_SPACE_BELOW && spaceAbove > spaceBelow;
 
   return {
     side,
-    bottom: wouldOverflowBottom ? MARGIN : null,
+    above,
   };
 }
 

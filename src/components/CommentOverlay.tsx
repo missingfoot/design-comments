@@ -14,7 +14,10 @@ import { CommentInput } from "./CommentInput";
 export function CommentOverlay() {
   const [user, setUser] = useState<User | null>(getUser);
   const [commentMode, setCommentMode] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem("dc-sidebar-open");
+    return saved === "true"; // Default to closed (false)
+  });
   const [sidebarPosition, setSidebarPosition] = useState<"left" | "right">("right");
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("dc-dark-mode");
@@ -40,6 +43,11 @@ export function CommentOverlay() {
   useEffect(() => {
     localStorage.setItem("dc-dark-mode", String(darkMode));
   }, [darkMode]);
+
+  // Persist sidebar state
+  useEffect(() => {
+    localStorage.setItem("dc-sidebar-open", String(sidebarOpen));
+  }, [sidebarOpen]);
 
   // Keyboard shortcut: Press 'C' to toggle comment mode
   // Only active when user is authenticated (not during auth modal)
@@ -82,11 +90,8 @@ export function CommentOverlay() {
     e.preventDefault();
     e.stopPropagation();
 
-    // If there's a selected comment, first click just dismisses it
-    if (selectedCommentId) {
-      setSelectedCommentId(null);
-      return;
-    }
+    // Close any open comment popover when clicking to create a new one
+    setSelectedCommentId(null);
 
     // Hide the capture layer temporarily to find element underneath
     const captureLayer = e.currentTarget as HTMLElement;
@@ -114,13 +119,10 @@ export function CommentOverlay() {
 
   const handleSubmitComment = (content: string) => {
     if (!pendingAnchor || !user) return;
-    const newCommentId = addComment(pendingAnchor.anchor, content, user);
+    addComment(pendingAnchor.anchor, content, user);
     setPendingAnchor(null);
     // Stay in comment mode - user can press C or click button to exit
-    // Select the new comment to show its popover
-    if (newCommentId) {
-      setSelectedCommentId(newCommentId);
-    }
+    // Comment is created as a pin, user can click it to open if needed
   };
 
   const handleCancelComment = () => {
@@ -236,8 +238,8 @@ export function CommentOverlay() {
 }
 
 const POPOVER_WIDTH = 288;
-const POPOVER_MAX_HEIGHT = 350;
 const MARGIN = 16;
+const MIN_SPACE_BELOW = 200;
 
 interface PendingCommentPinProps {
   position: { x: number; y: number };
@@ -257,7 +259,7 @@ function PendingCommentPin({
   darkMode,
 }: PendingCommentPinProps) {
   const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
+  const viewportHeight = window.visualViewport?.height || window.innerHeight;
 
   // Calculate popover position (same logic as CommentPins)
   const spaceOnRight = viewportWidth - position.x;
@@ -265,14 +267,16 @@ function PendingCommentPin({
   const showOnLeft = !(spaceOnRight >= POPOVER_WIDTH + MARGIN) &&
     (spaceOnLeft >= POPOVER_WIDTH + MARGIN || spaceOnLeft > spaceOnRight);
 
-  // Check if popover would go off bottom
-  const wouldOverflowBottom = position.y + POPOVER_MAX_HEIGHT > viewportHeight - MARGIN;
+  // Check available space below and above
+  const spaceBelow = viewportHeight - position.y - MARGIN;
+  const spaceAbove = position.y - MARGIN;
+  const showAbove = spaceBelow < MIN_SPACE_BELOW && spaceAbove > spaceBelow;
 
   // Popover positioning classes and styles
   const horizontalClass = showOnLeft ? "dc-right-full dc-mr-2" : "dc-left-full dc-ml-2";
-  const verticalStyle = wouldOverflowBottom
-    ? { bottom: 0, top: "auto" as const }
-    : { top: 0 };
+  const verticalStyle = showAbove
+    ? { bottom: 0 } // popover grows upward from pin
+    : { top: 0 }; // popover grows downward from pin
 
   return (
     <div

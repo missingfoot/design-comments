@@ -15,7 +15,7 @@ export function CommentPopover({
   thread,
   onReply,
   darkMode,
-  position = { side: "right", bottom: null },
+  position = { side: "right", above: false },
 }: CommentPopoverProps) {
   const [showReplyInput, setShowReplyInput] = useState(false);
 
@@ -29,10 +29,10 @@ export function CommentPopover({
     ? "dc-left-full dc-ml-2"
     : "dc-right-full dc-mr-2";
 
-  // Vertical: top aligns with pin by default, or use fixed bottom if near viewport bottom
-  const verticalStyle = position.bottom !== null
-    ? { bottom: 0, top: "auto" }
-    : { top: 0 };
+  // Vertical positioning: bottom: 0 anchors popover bottom at pin, so it grows upward
+  const verticalStyle = position.above
+    ? { bottom: 0 } // popover grows upward from pin
+    : { top: 0 }; // popover grows downward from pin
 
   return (
     <div
