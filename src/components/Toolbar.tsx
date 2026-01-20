@@ -33,7 +33,7 @@ export function Toolbar({
         {user.name[0].toUpperCase()}
       </div>
 
-      <div className={`dc-w-px dc-h-6 ${darkMode ? "dc-bg-neutral-900" : "dc-bg-neutral-200"}`} />
+      <div className={`dc-w-px dc-h-6 ${darkMode ? "dc-bg-neutral-600" : "dc-bg-neutral-200"}`} />
 
       {/* Comment mode toggle */}
       <button
@@ -44,7 +44,7 @@ export function Toolbar({
               ? "dc-bg-white dc-text-neutral-900"
               : "dc-bg-neutral-900 dc-text-white"
             : darkMode
-              ? "dc-text-neutral-300 hover:dc-bg-neutral-800"
+              ? "dc-text-neutral-300 hover:dc-bg-neutral-700"
               : "dc-text-neutral-700 hover:dc-bg-neutral-100"
         }`}
         title="Add comment"
@@ -65,7 +65,7 @@ export function Toolbar({
         Comment
       </button>
 
-      <div className={`dc-w-px dc-h-6 ${darkMode ? "dc-bg-neutral-900" : "dc-bg-neutral-200"}`} />
+      <div className={`dc-w-px dc-h-6 ${darkMode ? "dc-bg-neutral-600" : "dc-bg-neutral-200"}`} />
 
       {/* Sidebar toggle */}
       <button
@@ -76,7 +76,7 @@ export function Toolbar({
               ? "dc-bg-white dc-text-neutral-900"
               : "dc-bg-neutral-900 dc-text-white"
             : darkMode
-              ? "dc-text-neutral-300 hover:dc-bg-neutral-800"
+              ? "dc-text-neutral-300 hover:dc-bg-neutral-700"
               : "dc-text-neutral-700 hover:dc-bg-neutral-100"
         }`}
         title={sidebarOpen ? "Hide sidebar" : "Show sidebar"}

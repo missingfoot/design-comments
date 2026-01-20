@@ -84,9 +84,7 @@ export function Sidebar({
       onClick={() => setContextMenu(null)}
     >
       {/* Header */}
-      <div className={`dc-flex dc-items-center dc-justify-between dc-px-4 dc-py-3 dc-border-b ${
-        darkMode ? "dc-border-neutral-700" : "dc-border-neutral-200"
-      }`}>
+      <div className="dc-flex dc-items-center dc-justify-between dc-px-4 dc-py-3">
         <h2 className={`dc-font-semibold ${darkMode ? "dc-text-white" : "dc-text-neutral-900"}`}>Comments</h2>
         <button
           onClick={onClose}
@@ -109,8 +107,8 @@ export function Sidebar({
       </div>
 
       {/* Filter tabs */}
-      <div className={`dc-flex dc-gap-1 dc-px-4 dc-py-2 dc-border-b ${
-        darkMode ? "dc-border-neutral-700" : "dc-border-neutral-100"
+      <div className={`dc-flex dc-gap-1 dc-px-4 dc-pb-2 dc-border-b ${
+        darkMode ? "dc-border-neutral-700" : "dc-border-neutral-200"
       }`}>
         <FilterTab
           active={filter === "all"}
@@ -154,7 +152,7 @@ export function Sidebar({
                 onContextMenu={(e) => handleContextMenu(e, thread)}
                 className={`dc-w-full dc-text-left dc-p-4 ${isLast ? "" : "dc-border-b"} ${
                   darkMode
-                    ? `dc-border-neutral-700 ${selectedId === thread.id ? "dc-bg-slate-800" : "hover:dc-bg-neutral-800"}`
+                    ? `dc-border-neutral-700 ${selectedId === thread.id ? "dc-bg-slate-800" : "hover:dc-bg-neutral-700"}`
                     : `dc-border-neutral-100 ${selectedId === thread.id ? "dc-bg-blue-50" : "hover:dc-bg-neutral-50"}`
                 }`}
               >
@@ -206,13 +204,13 @@ export function Sidebar({
 
       {/* Footer with position toggle and dark mode */}
       <div className={`dc-flex dc-items-center dc-justify-between dc-px-2 dc-py-2 dc-border-t dc-rounded-b-lg ${
-        darkMode ? "dc-border-neutral-700" : "dc-border-neutral-200"
+        darkMode ? "dc-bg-neutral-800 dc-border-neutral-700" : "dc-bg-neutral-50 dc-border-neutral-200"
       }`}>
         <button
           onClick={onTogglePosition}
           className={`dc-flex dc-items-center dc-gap-2 dc-px-2 dc-py-1.5 dc-text-sm dc-rounded ${
             darkMode
-              ? "dc-text-neutral-300 hover:dc-text-white hover:dc-bg-neutral-800"
+              ? "dc-text-neutral-300 hover:dc-text-white hover:dc-bg-neutral-700"
               : "dc-text-neutral-700 hover:dc-text-neutral-900 hover:dc-bg-neutral-200"
           } ${position === "right" ? "" : "dc-order-2"}`}
         >
@@ -236,7 +234,7 @@ export function Sidebar({
           onClick={onToggleDarkMode}
           className={`dc-p-2 dc-rounded ${
             darkMode
-              ? "dc-text-neutral-300 hover:dc-text-white hover:dc-bg-neutral-800"
+              ? "dc-text-neutral-300 hover:dc-text-white hover:dc-bg-neutral-700"
               : "dc-text-neutral-700 hover:dc-text-neutral-900 hover:dc-bg-neutral-200"
           } ${position === "right" ? "" : "dc-order-1"}`}
           title={darkMode ? "Light mode" : "Dark mode"}
@@ -266,7 +264,7 @@ export function Sidebar({
           <button
             onClick={handleResolve}
             className={`dc-w-full dc-px-4 dc-py-2 dc-text-left dc-text-sm ${
-              darkMode ? "dc-text-neutral-300 hover:dc-bg-neutral-800" : "dc-text-neutral-700 hover:dc-bg-neutral-50"
+              darkMode ? "dc-text-neutral-300 hover:dc-bg-neutral-700" : "dc-text-neutral-700 hover:dc-bg-neutral-50"
             }`}
           >
             {contextMenu.resolved ? "Reopen" : "Resolve"}
@@ -274,7 +272,7 @@ export function Sidebar({
           <button
             onClick={handleDelete}
             className={`dc-w-full dc-px-4 dc-py-2 dc-text-left dc-text-sm ${
-              darkMode ? "dc-text-red-400 hover:dc-bg-neutral-800" : "dc-text-red-600 hover:dc-bg-red-50"
+              darkMode ? "dc-text-red-400 hover:dc-bg-neutral-700" : "dc-text-red-600 hover:dc-bg-red-50"
             }`}
           >
             Delete
@@ -307,7 +305,7 @@ function FilterTab({
             ? "dc-bg-white dc-text-neutral-900"
             : "dc-bg-neutral-900 dc-text-white"
           : darkMode
-            ? "dc-text-neutral-400 hover:dc-bg-neutral-800"
+            ? "dc-text-neutral-400 hover:dc-bg-neutral-700"
             : "dc-text-neutral-600 hover:dc-bg-neutral-100"
       }`}
     >
@@ -319,7 +317,7 @@ function FilterTab({
               ? "dc-bg-neutral-900/20 dc-text-neutral-900"
               : "dc-bg-white/20 dc-text-white"
             : darkMode
-              ? "dc-bg-neutral-900 dc-text-neutral-400"
+              ? "dc-bg-neutral-700 dc-text-neutral-300"
               : "dc-bg-neutral-200 dc-text-neutral-600"
         }`}
       >

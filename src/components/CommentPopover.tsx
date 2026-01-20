@@ -24,7 +24,7 @@ export function CommentPopover({
   return (
     <div
       data-design-comments="popover"
-      className={`dc-absolute dc-left-full dc-top-0 dc-ml-2 dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden ${
+      className={`dc-absolute dc-left-full dc-top-0 dc-ml-2 dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
         darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
       }`}
       onClick={(e) => e.stopPropagation()}

@@ -97,30 +97,23 @@ export function CommentOverlay() {
     return null;
   }
 
-  // Custom cursors
-  const userColorEncoded = encodeURIComponent(user.color);
-  const defaultCursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23212121' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.1666 9.16667L4.1666 4.16667L9.1666 21.1667L12.9999 13L21.1666 9.16667Z' stroke='%23212121' stroke-width='2' fill='white'/%3E%3C/g%3E%3C/svg%3E") 4 4, default`;
-  const pointerCursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23212121' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.99995 12V3C7.99995 1.89543 8.89538 1 9.99995 1V1C11.1045 1 11.9999 1.89543 11.9999 3V7.5L18.4522 9.12095C20.1446 9.52767 21.2363 11.1655 20.9562 12.8777L19.4999 22H8.99995V21.4762C8.99995 20.7351 8.72562 20.0202 8.22984 19.4693L5.78351 16.7511C4.95721 15.833 4.5 14.6415 4.5 13.4063V11C4.5 9.89543 5.39543 9 6.5 9H7.5' stroke='%23212121' stroke-width='2' fill='white'/%3E%3C/g%3E%3C/svg%3E") 10 1, pointer`;
-  const commentCursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23212121' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m20,3H4c-1.105,0-2,.895-2,2v11c0,1.105.895,2,2,2h5l3,4,3-4h5c1.105,0,2-.895,2-2V5c0-1.105-.895-2-2-2Z' fill='white' stroke='%23212121' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E") 12 22, crosshair`;
+  // Comment mode cursor
+  const commentCursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M14,.5H2c-.828,0-1.5,.672-1.5,1.5V11c0,.828,.672,1.5,1.5,1.5h3.5l2.5,3,2.5-3h3.5c.828,0,1.5-.672,1.5-1.5V2c0-.828-.672-1.5-1.5-1.5Z' fill='white' stroke='%23212121' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 8 15, crosshair`;
 
   return (
     <div data-design-comments="root">
-      {/* Global cursor style */}
-      <style>{`
-        html, body, body * {
-          cursor: ${commentMode ? commentCursor : defaultCursor} !important;
-        }
-        a, button, [role="button"], input[type="submit"], input[type="button"], select, label[for], [onclick] {
-          cursor: ${pointerCursor} !important;
-        }
-        [data-design-comments] input,
-        [data-design-comments] textarea {
-          cursor: text !important;
-        }
-        [data-design-comments] button {
-          cursor: ${pointerCursor} !important;
-        }
-      `}</style>
+      {/* Comment mode cursor */}
+      {commentMode && (
+        <style>{`
+          html, body, body * {
+            cursor: ${commentCursor} !important;
+          }
+          [data-design-comments] input,
+          [data-design-comments] textarea {
+            cursor: text !important;
+          }
+        `}</style>
+      )}
 
       {/* Click capture layer for comment mode */}
       {commentMode && (
@@ -176,6 +169,7 @@ export function CommentOverlay() {
               onCancel={handleCancelComment}
               placeholder="Add a comment..."
               autoFocus
+              darkMode={darkMode}
             />
           </div>
         </>

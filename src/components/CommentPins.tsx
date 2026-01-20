@@ -68,7 +68,7 @@ export function CommentPins({
           <div
             key={thread.id}
             data-design-comments="pin"
-            className="dc-fixed dc-z-[9999] dc-pointer-events-auto"
+            className={`dc-fixed dc-pointer-events-auto ${showPopover ? "dc-z-[10003]" : "dc-z-[9999]"}`}
             style={{
               left: pos.x,
               top: pos.y - window.scrollY,

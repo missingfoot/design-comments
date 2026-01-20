@@ -90,19 +90,16 @@ export function CommentInput({
         className={`dc-w-full dc-text-sm dc-resize-none dc-border-none dc-outline-none dc-leading-normal dc-max-h-32 dc-overflow-y-auto ${
           darkMode ? "dc-scrollbar-thin-dark" : "dc-scrollbar-thin"
         } ${
-          inline ? "dc-p-0 dc-bg-transparent" : "dc-p-3"
+          inline ? "dc-p-0 dc-bg-transparent" : darkMode ? "dc-p-3 dc-bg-neutral-900" : "dc-p-3 dc-bg-white"
         } ${darkMode ? "dc-text-white dc-placeholder-neutral-500" : "dc-text-neutral-900 dc-placeholder-neutral-400"}`}
       />
       <div className={`dc-flex dc-items-center dc-gap-2 ${
         inline
           ? "dc-pt-2"
-          : `dc-justify-between dc-px-3 dc-py-2 dc-border-t ${
-              darkMode ? "dc-bg-neutral-800 dc-border-neutral-700" : "dc-bg-neutral-50 dc-border-neutral-100"
+          : `dc-justify-end dc-px-3 dc-py-2 dc-border-t ${
+              darkMode ? "dc-bg-neutral-800 dc-border-neutral-700" : "dc-bg-neutral-50 dc-border-neutral-200"
             }`
       }`}>
-        {!inline && (
-          <span className={`dc-text-xs ${darkMode ? "dc-text-neutral-500" : "dc-text-neutral-400"}`}>Shift+Enter for new line</span>
-        )}
         <div className={`dc-flex dc-gap-2 ${inline ? "dc-ml-auto" : ""}`}>
           <button
             onClick={onCancel}
