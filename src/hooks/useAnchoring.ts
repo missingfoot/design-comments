@@ -40,10 +40,26 @@ export function useAnchoring(threads: CommentThread[]) {
       attributes: true,
     });
 
+    // Update when CSS transitions complete (for slide-in/out animations)
+    const handleTransitionEnd = (e: TransitionEvent) => {
+      // Only care about transform/opacity/visibility transitions that affect visibility
+      if (
+        e.propertyName === "transform" ||
+        e.propertyName === "opacity" ||
+        e.propertyName === "visibility" ||
+        e.propertyName === "max-height" ||
+        e.propertyName === "height"
+      ) {
+        updatePositions();
+      }
+    };
+    document.addEventListener("transitionend", handleTransitionEnd);
+
     return () => {
       window.removeEventListener("scroll", updatePositions);
       window.removeEventListener("resize", updatePositions);
       observer.disconnect();
+      document.removeEventListener("transitionend", handleTransitionEnd);
     };
   }, [updatePositions]);
 

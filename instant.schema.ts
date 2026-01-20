@@ -17,7 +17,10 @@ const _schema = i.schema({
           prefix?: string;
           suffix?: string;
         };
-        rect: { x: number; y: number };
+        // Position relative to element (percentage of element dimensions)
+        offset: { x: number; y: number };
+        // Legacy: old viewport-based positioning (for backward compatibility)
+        rect?: { x: number; y: number };
       }>(),
       content: i.string(),
       author: i.string(),

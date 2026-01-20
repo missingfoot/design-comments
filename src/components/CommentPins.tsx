@@ -57,7 +57,8 @@ export function CommentPins({
     <div ref={containerRef} data-design-comments="pins" className="dc-pointer-events-none">
       {threads.map((thread, index) => {
         const pos = positions.get(thread.id);
-        if (!pos) return null;
+        // Don't render pin if position not calculated yet or element not found/visible
+        if (!pos || !pos.found) return null;
 
         const isSelected = selectedId === thread.id;
         const isHovered = hoveredId === thread.id && !selectedId; // Don't show hover when something is selected

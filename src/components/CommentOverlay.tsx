@@ -41,6 +41,37 @@ export function CommentOverlay() {
     localStorage.setItem("dc-dark-mode", String(darkMode));
   }, [darkMode]);
 
+  // Keyboard shortcut: Press 'C' to toggle comment mode
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      const target = e.target as HTMLElement;
+      const tagName = target.tagName.toLowerCase();
+      const isEditable =
+        tagName === "input" ||
+        tagName === "textarea" ||
+        target.isContentEditable ||
+        target.closest("[contenteditable]");
+
+      if (isEditable) return;
+
+      // Ignore if modifier keys are pressed (Ctrl+C, Cmd+C, etc.)
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      // Toggle comment mode on 'C' or 'c'
+      if (e.key === "c" || e.key === "C") {
+        e.preventDefault();
+        setCommentMode((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   // Handle click on page elements when in comment mode
   const handlePageClick = (e: React.MouseEvent) => {
     if (!commentMode || !user) return;

@@ -47,7 +47,7 @@ export function Toolbar({
               ? "dc-text-neutral-300 hover:dc-bg-neutral-700"
               : "dc-text-neutral-700 hover:dc-bg-neutral-100"
         }`}
-        title="Add comment"
+        title="Add comment (C)"
       >
         <svg
           className="dc-w-4 dc-h-4"
