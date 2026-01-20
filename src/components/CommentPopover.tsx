@@ -2,17 +2,20 @@ import { useState } from "react";
 import type { CommentThread, Comment } from "../hooks/useComments";
 import { CommentInput } from "./CommentInput";
 import { formatRelativeTime } from "../lib/time";
+import type { PopoverPosition } from "./CommentPins";
 
 interface CommentPopoverProps {
   thread: CommentThread;
   onReply: (content: string) => void;
   darkMode: boolean;
+  position?: PopoverPosition;
 }
 
 export function CommentPopover({
   thread,
   onReply,
   darkMode,
+  position = { side: "right", verticalAlign: "center" },
 }: CommentPopoverProps) {
   const [showReplyInput, setShowReplyInput] = useState(false);
 
@@ -21,10 +24,20 @@ export function CommentPopover({
     setShowReplyInput(false);
   };
 
+  // Build position classes based on calculated position
+  const horizontalClass = position.side === "right"
+    ? "dc-left-full dc-ml-2"
+    : "dc-right-full dc-mr-2";
+
+  const verticalClass =
+    position.verticalAlign === "center" ? "dc-top-1/2 dc--translate-y-1/2" :
+    position.verticalAlign === "top" ? "dc-top-0" :
+    "dc-bottom-0";
+
   return (
     <div
       data-design-comments="popover"
-      className={`dc-absolute dc-left-full dc-top-0 dc-ml-2 dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
+      className={`dc-absolute ${horizontalClass} ${verticalClass} dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
         darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
       }`}
       onClick={(e) => e.stopPropagation()}

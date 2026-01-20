@@ -8,6 +8,46 @@ interface Position {
   found: boolean;
 }
 
+export interface PopoverPosition {
+  side: "left" | "right";
+  verticalAlign: "top" | "center" | "bottom";
+}
+
+const POPOVER_WIDTH = 288; // dc-w-72 = 18rem = 288px
+const POPOVER_HEIGHT = 320; // approximate max height
+const MARGIN = 16; // margin from viewport edges
+
+/**
+ * Calculate optimal popover position to keep it within viewport
+ */
+function calculatePopoverPosition(pinX: number, pinY: number): PopoverPosition {
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  // Determine horizontal side
+  const spaceOnRight = viewportWidth - pinX;
+  const spaceOnLeft = pinX;
+  const side: "left" | "right" =
+    spaceOnRight >= POPOVER_WIDTH + MARGIN ? "right" :
+    spaceOnLeft >= POPOVER_WIDTH + MARGIN ? "left" :
+    spaceOnRight >= spaceOnLeft ? "right" : "left";
+
+  // Determine vertical alignment
+  const spaceAbove = pinY;
+  const spaceBelow = viewportHeight - pinY;
+
+  let verticalAlign: "top" | "center" | "bottom";
+  if (spaceBelow >= POPOVER_HEIGHT / 2 && spaceAbove >= POPOVER_HEIGHT / 2) {
+    verticalAlign = "center";
+  } else if (spaceBelow < POPOVER_HEIGHT / 2) {
+    verticalAlign = "bottom"; // align to bottom of pin
+  } else {
+    verticalAlign = "top"; // align to top of pin
+  }
+
+  return { side, verticalAlign };
+}
+
 interface CommentPinsProps {
   threads: CommentThread[];
   positions: Map<string, Position>;
@@ -100,6 +140,7 @@ export function CommentPins({
                 thread={thread}
                 onReply={(content) => onReply(thread.id, content)}
                 darkMode={darkMode}
+                position={calculatePopoverPosition(pos.x, pos.y - window.scrollY)}
               />
             )}
           </div>

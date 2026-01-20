@@ -172,38 +172,13 @@ export function CommentOverlay() {
 
       {/* Pending comment input */}
       {pendingAnchor && (
-        <>
-          {/* Bubble dot at click position */}
-          <div
-            data-design-comments="pending-dot"
-            className="dc-fixed dc-z-[10001] dc-w-4 dc-h-4 dc-rounded-full dc-border-2 dc-border-white"
-            style={{
-              left: pendingAnchor.position.x,
-              top: pendingAnchor.position.y,
-              transform: "translate(-50%, -50%)",
-              backgroundColor: user?.color || "#3b82f6",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
-            }}
-          />
-          {/* Input to the right of the dot */}
-          <div
-            data-design-comments="input"
-            className="dc-fixed dc-z-[10001]"
-            style={{
-              left: pendingAnchor.position.x + 16,
-              top: pendingAnchor.position.y,
-              transform: "translateY(-50%)",
-            }}
-          >
-            <CommentInput
-              onSubmit={handleSubmitComment}
-              onCancel={handleCancelComment}
-              placeholder="Add a comment..."
-              autoFocus
-              darkMode={darkMode}
-            />
-          </div>
-        </>
+        <PendingCommentInput
+          position={pendingAnchor.position}
+          userColor={user?.color || "#3b82f6"}
+          onSubmit={handleSubmitComment}
+          onCancel={handleCancelComment}
+          darkMode={darkMode}
+        />
       )}
 
       {/* Sidebar */}
@@ -232,5 +207,88 @@ export function CommentOverlay() {
         darkMode={darkMode}
       />
     </div>
+  );
+}
+
+const INPUT_WIDTH = 280;
+const INPUT_HEIGHT = 80;
+const MARGIN = 16;
+
+interface PendingCommentInputProps {
+  position: { x: number; y: number };
+  userColor: string;
+  onSubmit: (content: string) => void;
+  onCancel: () => void;
+  darkMode: boolean;
+}
+
+function PendingCommentInput({
+  position,
+  userColor,
+  onSubmit,
+  onCancel,
+  darkMode,
+}: PendingCommentInputProps) {
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  // Determine horizontal position
+  const spaceOnRight = viewportWidth - position.x;
+  const showOnLeft = spaceOnRight < INPUT_WIDTH + MARGIN + 16;
+
+  // Determine vertical adjustment
+  const spaceBelow = viewportHeight - position.y;
+  const spaceAbove = position.y;
+
+  let verticalTransform = "-50%"; // center by default
+  if (spaceBelow < INPUT_HEIGHT / 2 + MARGIN) {
+    // Not enough space below, align to bottom
+    verticalTransform = "-100%";
+  } else if (spaceAbove < INPUT_HEIGHT / 2 + MARGIN) {
+    // Not enough space above, align to top
+    verticalTransform = "0%";
+  }
+
+  const inputStyle = showOnLeft
+    ? {
+        right: viewportWidth - position.x + 16,
+        top: position.y,
+        transform: `translateY(${verticalTransform})`,
+      }
+    : {
+        left: position.x + 16,
+        top: position.y,
+        transform: `translateY(${verticalTransform})`,
+      };
+
+  return (
+    <>
+      {/* Bubble dot at click position */}
+      <div
+        data-design-comments="pending-dot"
+        className="dc-fixed dc-z-[10001] dc-w-4 dc-h-4 dc-rounded-full dc-border-2 dc-border-white"
+        style={{
+          left: position.x,
+          top: position.y,
+          transform: "translate(-50%, -50%)",
+          backgroundColor: userColor,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+        }}
+      />
+      {/* Input positioned smartly */}
+      <div
+        data-design-comments="input"
+        className="dc-fixed dc-z-[10001]"
+        style={inputStyle}
+      >
+        <CommentInput
+          onSubmit={onSubmit}
+          onCancel={onCancel}
+          placeholder="Add a comment..."
+          autoFocus
+          darkMode={darkMode}
+        />
+      </div>
+    </>
   );
 }
