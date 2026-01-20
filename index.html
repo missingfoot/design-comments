@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Comments - Test Page</title>
+    <style>
+      /* Sample page styles for testing */
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        line-height: 1.6;
+      }
+      h1 { color: #1a1a1a; }
+      .card {
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .button {
+        background: #0066ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .button:hover { background: #0052cc; }
+    </style>
+  </head>
+  <body>
+    <h1>Sample Project Page</h1>
+    <p>This is a test page for the Design Comments tool. Try clicking on elements to add comments!</p>
+
+    <div class="card">
+      <h2>Feature Card</h2>
+      <p>This card component can receive comments. Click on it to start a discussion.</p>
+      <button class="button">Sample Button</button>
+    </div>
+
+    <div class="card">
+      <h2>Another Section</h2>
+      <p>Comments can be attached to any element on the page. They'll stay anchored even when the page layout changes.</p>
+    </div>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
