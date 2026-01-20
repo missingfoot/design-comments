@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { CommentOverlay } from "./components/CommentOverlay";
+import "./index.css";
 
 // Embed entry point - production bundle
-// Styles are bundled inline
 
 function init() {
   // Create container

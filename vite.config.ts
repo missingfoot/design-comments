@@ -1,9 +1,44 @@
-import { defineConfig } from 'vite'
+import { defineConfig, Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+
+// Plugin to inline CSS into the JS bundle
+function inlineCss(): Plugin {
+  return {
+    name: 'inline-css',
+    enforce: 'post',
+    generateBundle(_, bundle) {
+      let cssContent = '';
+      const cssFiles: string[] = [];
+
+      // Collect CSS content
+      for (const [fileName, chunk] of Object.entries(bundle)) {
+        if (fileName.endsWith('.css') && chunk.type === 'asset') {
+          cssContent += chunk.source;
+          cssFiles.push(fileName);
+        }
+      }
+
+      // Remove CSS files from bundle
+      for (const fileName of cssFiles) {
+        delete bundle[fileName];
+      }
+
+      // Inject CSS into JS
+      if (cssContent) {
+        for (const chunk of Object.values(bundle)) {
+          if (chunk.type === 'chunk' && chunk.isEntry) {
+            const cssCode = `(function(){var style=document.createElement('style');style.textContent=${JSON.stringify(cssContent)};document.head.appendChild(style);})();`;
+            chunk.code = cssCode + chunk.code;
+          }
+        }
+      }
+    }
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
-  plugins: [react()],
+  plugins: [react(), ...(command === 'build' ? [inlineCss()] : [])],
   define: {
     'process.env.NODE_ENV': JSON.stringify('production'),
     'process.env': {},
