@@ -1,9 +1,14 @@
 import { init } from "@instantdb/react";
 import schema from "../../instant.schema";
 
-const APP_ID = import.meta.env.VITE_INSTANT_APP_ID || "232db8fc-efd3-4111-bbdc-31d69b6f171f";
+const APP_ID = import.meta.env.VITE_INSTANT_APP_ID;
 
-console.log("[DC] InstantDB App ID:", APP_ID);
+if (!APP_ID) {
+  throw new Error(
+    "[Design Comments] Missing VITE_INSTANT_APP_ID environment variable. " +
+    "Please set it to your InstantDB app ID."
+  );
+}
 
 export const db = init({ appId: APP_ID, schema });
 
