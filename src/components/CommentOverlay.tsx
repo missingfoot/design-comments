@@ -42,7 +42,10 @@ export function CommentOverlay() {
   }, [darkMode]);
 
   // Keyboard shortcut: Press 'C' to toggle comment mode
+  // Only active when user is authenticated (not during auth modal)
   useEffect(() => {
+    if (!user) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ignore if user is typing in an input field
       const target = e.target as HTMLElement;
@@ -70,7 +73,7 @@ export function CommentOverlay() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [user]);
 
   // Handle click on page elements when in comment mode
   const handlePageClick = (e: React.MouseEvent) => {
@@ -78,6 +81,12 @@ export function CommentOverlay() {
 
     e.preventDefault();
     e.stopPropagation();
+
+    // If there's a selected comment, first click just dismisses it
+    if (selectedCommentId) {
+      setSelectedCommentId(null);
+      return;
+    }
 
     // Hide the capture layer temporarily to find element underneath
     const captureLayer = e.currentTarget as HTMLElement;
@@ -105,9 +114,13 @@ export function CommentOverlay() {
 
   const handleSubmitComment = (content: string) => {
     if (!pendingAnchor || !user) return;
-    addComment(pendingAnchor.anchor, content, user);
+    const newCommentId = addComment(pendingAnchor.anchor, content, user);
     setPendingAnchor(null);
-    setCommentMode(false);
+    // Stay in comment mode - user can press C or click button to exit
+    // Select the new comment to show its popover
+    if (newCommentId) {
+      setSelectedCommentId(newCommentId);
+    }
   };
 
   const handleCancelComment = () => {
@@ -139,9 +152,20 @@ export function CommentOverlay() {
           html, body, body * {
             cursor: ${commentCursor} !important;
           }
+          [data-design-comments="sidebar"],
+          [data-design-comments="sidebar"] *,
+          [data-design-comments="toolbar"],
+          [data-design-comments="toolbar"] *,
+          [data-design-comments="popover"],
+          [data-design-comments="popover"] * {
+            cursor: default !important;
+          }
           [data-design-comments] input,
           [data-design-comments] textarea {
             cursor: text !important;
+          }
+          [data-design-comments] button {
+            cursor: pointer !important;
           }
         `}</style>
       )}
@@ -170,11 +194,12 @@ export function CommentOverlay() {
         darkMode={darkMode}
       />
 
-      {/* Pending comment input */}
+      {/* Pending comment - shows as a full pin with input popover */}
       {pendingAnchor && (
-        <PendingCommentInput
+        <PendingCommentPin
           position={pendingAnchor.position}
           userColor={user?.color || "#3b82f6"}
+          pinNumber={threads.length + 1}
           onSubmit={handleSubmitComment}
           onCancel={handleCancelComment}
           darkMode={darkMode}
@@ -210,85 +235,84 @@ export function CommentOverlay() {
   );
 }
 
-const INPUT_WIDTH = 280;
-const INPUT_HEIGHT = 80;
+const POPOVER_WIDTH = 288;
+const POPOVER_MAX_HEIGHT = 350;
 const MARGIN = 16;
 
-interface PendingCommentInputProps {
+interface PendingCommentPinProps {
   position: { x: number; y: number };
   userColor: string;
+  pinNumber: number;
   onSubmit: (content: string) => void;
   onCancel: () => void;
   darkMode: boolean;
 }
 
-function PendingCommentInput({
+function PendingCommentPin({
   position,
   userColor,
+  pinNumber,
   onSubmit,
   onCancel,
   darkMode,
-}: PendingCommentInputProps) {
+}: PendingCommentPinProps) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
-  // Determine horizontal position
+  // Calculate popover position (same logic as CommentPins)
   const spaceOnRight = viewportWidth - position.x;
-  const showOnLeft = spaceOnRight < INPUT_WIDTH + MARGIN + 16;
+  const spaceOnLeft = position.x;
+  const showOnLeft = !(spaceOnRight >= POPOVER_WIDTH + MARGIN) &&
+    (spaceOnLeft >= POPOVER_WIDTH + MARGIN || spaceOnLeft > spaceOnRight);
 
-  // Determine vertical adjustment
-  const spaceBelow = viewportHeight - position.y;
-  const spaceAbove = position.y;
+  // Check if popover would go off bottom
+  const wouldOverflowBottom = position.y + POPOVER_MAX_HEIGHT > viewportHeight - MARGIN;
 
-  let verticalTransform = "-50%"; // center by default
-  if (spaceBelow < INPUT_HEIGHT / 2 + MARGIN) {
-    // Not enough space below, align to bottom
-    verticalTransform = "-100%";
-  } else if (spaceAbove < INPUT_HEIGHT / 2 + MARGIN) {
-    // Not enough space above, align to top
-    verticalTransform = "0%";
-  }
-
-  const inputStyle = showOnLeft
-    ? {
-        right: viewportWidth - position.x + 16,
-        top: position.y,
-        transform: `translateY(${verticalTransform})`,
-      }
-    : {
-        left: position.x + 16,
-        top: position.y,
-        transform: `translateY(${verticalTransform})`,
-      };
+  // Popover positioning classes and styles
+  const horizontalClass = showOnLeft ? "dc-right-full dc-mr-2" : "dc-left-full dc-ml-2";
+  const verticalStyle = wouldOverflowBottom
+    ? { bottom: 0, top: "auto" as const }
+    : { top: 0 };
 
   return (
-    <>
-      {/* Bubble dot at click position */}
+    <div
+      data-design-comments="pending-pin"
+      className="dc-fixed dc-pointer-events-auto dc-z-[10003]"
+      style={{
+        left: position.x,
+        top: position.y,
+        transform: "translate(-50%, -50%)",
+      }}
+    >
+      {/* Pin marker - same style as existing pins */}
       <div
-        data-design-comments="pending-dot"
-        className="dc-fixed dc-z-[10001] dc-w-4 dc-h-4 dc-rounded-full dc-border-2 dc-border-white"
-        style={{
-          left: position.x,
-          top: position.y,
-          transform: "translate(-50%, -50%)",
-          backgroundColor: userColor,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
-        }}
-      />
-      {/* Input positioned smartly */}
-      <div
-        data-design-comments="input"
-        className="dc-fixed dc-z-[10001]"
-        style={inputStyle}
+        className="dc-w-7 dc-h-7 dc-rounded-full dc-flex dc-items-center dc-justify-center dc-text-white dc-text-xs dc-font-medium dc-shadow-lg dc-border-2 dc-border-white dc-scale-110"
+        style={{ backgroundColor: userColor }}
       >
-        <CommentInput
-          onSubmit={onSubmit}
-          onCancel={onCancel}
-          placeholder="Add a comment..."
-          autoFocus
-          darkMode={darkMode}
-        />
+        {pinNumber}
       </div>
-    </>
+
+      {/* Input popover - same style as comment popover */}
+      <div
+        data-design-comments="popover"
+        className={`dc-absolute ${horizontalClass} dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
+          darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
+        }`}
+        style={verticalStyle}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="dc-p-3">
+          <CommentInput
+            onSubmit={onSubmit}
+            onCancel={onCancel}
+            placeholder="Add a comment..."
+            autoFocus
+            inline
+            darkMode={darkMode}
+            submitLabel="Submit"
+          />
+        </div>
+      </div>
+    </div>
   );
 }

@@ -10,15 +10,16 @@ interface Position {
 
 export interface PopoverPosition {
   side: "left" | "right";
-  verticalAlign: "top" | "center" | "bottom";
+  bottom: number | null; // if set, use bottom positioning instead of top
 }
 
 const POPOVER_WIDTH = 288; // dc-w-72 = 18rem = 288px
-const POPOVER_HEIGHT = 320; // approximate max height
+const POPOVER_MAX_HEIGHT = 350; // max possible height
 const MARGIN = 16; // margin from viewport edges
 
 /**
  * Calculate optimal popover position to keep it within viewport
+ * Popover top aligns with pin by default, shifts up if would go off bottom
  */
 function calculatePopoverPosition(pinX: number, pinY: number): PopoverPosition {
   const viewportWidth = window.innerWidth;
@@ -32,20 +33,14 @@ function calculatePopoverPosition(pinX: number, pinY: number): PopoverPosition {
     spaceOnLeft >= POPOVER_WIDTH + MARGIN ? "left" :
     spaceOnRight >= spaceOnLeft ? "right" : "left";
 
-  // Determine vertical alignment
-  const spaceAbove = pinY;
-  const spaceBelow = viewportHeight - pinY;
+  // Check if popover would go off bottom
+  // Top of popover aligns with pin, so bottom would be at pinY + POPOVER_MAX_HEIGHT
+  const wouldOverflowBottom = pinY + POPOVER_MAX_HEIGHT > viewportHeight - MARGIN;
 
-  let verticalAlign: "top" | "center" | "bottom";
-  if (spaceBelow >= POPOVER_HEIGHT / 2 && spaceAbove >= POPOVER_HEIGHT / 2) {
-    verticalAlign = "center";
-  } else if (spaceBelow < POPOVER_HEIGHT / 2) {
-    verticalAlign = "bottom"; // align to bottom of pin
-  } else {
-    verticalAlign = "top"; // align to top of pin
-  }
-
-  return { side, verticalAlign };
+  return {
+    side,
+    bottom: wouldOverflowBottom ? MARGIN : null,
+  };
 }
 
 interface CommentPinsProps {

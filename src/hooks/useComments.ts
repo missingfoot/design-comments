@@ -67,8 +67,8 @@ export function useComments(projectId: string | null, pageUrl: string) {
     content: string,
     user: User,
     parentId?: string
-  ) => {
-    if (!projectId) return;
+  ): string | null => {
+    if (!projectId) return null;
 
     const commentId = id();
     db.transact([
@@ -85,6 +85,8 @@ export function useComments(projectId: string | null, pageUrl: string) {
       }),
       tx.comments[commentId].link({ project: projectId }),
     ]);
+
+    return commentId;
   };
 
   const resolveComment = (commentId: string, resolved: boolean) => {

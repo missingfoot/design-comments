@@ -15,7 +15,7 @@ export function CommentPopover({
   thread,
   onReply,
   darkMode,
-  position = { side: "right", verticalAlign: "center" },
+  position = { side: "right", bottom: null },
 }: CommentPopoverProps) {
   const [showReplyInput, setShowReplyInput] = useState(false);
 
@@ -29,17 +29,18 @@ export function CommentPopover({
     ? "dc-left-full dc-ml-2"
     : "dc-right-full dc-mr-2";
 
-  const verticalClass =
-    position.verticalAlign === "center" ? "dc-top-1/2 dc--translate-y-1/2" :
-    position.verticalAlign === "top" ? "dc-top-0" :
-    "dc-bottom-0";
+  // Vertical: top aligns with pin by default, or use fixed bottom if near viewport bottom
+  const verticalStyle = position.bottom !== null
+    ? { bottom: 0, top: "auto" }
+    : { top: 0 };
 
   return (
     <div
       data-design-comments="popover"
-      className={`dc-absolute ${horizontalClass} ${verticalClass} dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
+      className={`dc-absolute ${horizontalClass} dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
         darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
       }`}
+      style={verticalStyle}
       onClick={(e) => e.stopPropagation()}
     >
       {/* Thread content */}

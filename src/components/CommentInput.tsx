@@ -10,6 +10,7 @@ interface CommentInputProps {
   collapsed?: boolean;
   onExpand?: () => void;
   darkMode?: boolean;
+  submitLabel?: string;
 }
 
 export function CommentInput({
@@ -22,6 +23,7 @@ export function CommentInput({
   collapsed = false,
   onExpand,
   darkMode = false,
+  submitLabel = "Reply",
 }: CommentInputProps) {
   const [content, setContent] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -112,7 +114,7 @@ export function CommentInput({
             disabled={!content.trim()}
             className="dc-px-3 dc-py-1 dc-text-sm dc-bg-blue-500 dc-text-white dc-rounded dc-disabled:opacity-50 hover:dc-bg-blue-600"
           >
-            Reply
+            {submitLabel}
           </button>
         </div>
       </div>
