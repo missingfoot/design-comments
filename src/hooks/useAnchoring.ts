@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { getElementPosition, type Anchor } from "../lib/anchor";
+import { getElementPosition } from "../lib/anchor";
 import type { CommentThread } from "./useComments";
 
 interface Position {
