@@ -229,7 +229,7 @@
         50% { opacity: 0.5; }
       }
 
-      .hero-title {
+      h1 {
         font-family: 'Google Sans Display', 'Google Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         font-size: clamp(40px, 8vw, 64px);
         font-weight: 800;
@@ -247,23 +247,6 @@
         color: var(--text-secondary);
         max-width: 560px;
         margin: 0 auto 40px;
-      }
-
-      .try-hint {
-        font-size: 14px;
-        color: var(--text-secondary);
-        margin: 16px auto 0;
-      }
-
-      .try-hint kbd {
-        display: inline-block;
-        padding: 2px 8px;
-        background: var(--bg-secondary);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        font-family: 'Google Sans Code', monospace;
-        font-size: 13px;
-        color: var(--text);
       }
 
       .hero-visual {
@@ -669,7 +652,7 @@
           <span class="badge-dot"></span>
           Beta, in active development
         </div>
-        <h1 class="hero-title">Figma-style comments for any website</h1>
+        <h1>Figma-style comments for any website</h1>
         <p>Add collaborative design feedback to your site with a single script tag. Click anywhere to leave comments, resolve threads, and keep your team in sync.</p>
 
         <a href="https://github.com/missingfoot/design-comments" target="_blank" class="github-btn">
@@ -679,8 +662,7 @@
           View on GitHub
         </a>
 
-        <p class="try-hint">Press <kbd>C</kbd> or click the comment button to try it on this page!</p>
-
+        
         <div class="hero-visual">
           <div class="floating-comment left">
             <div class="comment-avatar" style="background: linear-gradient(135deg, #f472b6, #ec4899);"></div>
@@ -817,9 +799,6 @@
         View on GitHub
       </a>
     </div>
-
-    <!-- Design Comments - try it on this page! -->
-    <script src="https://design-comments.netlify.app/embed.iife.js"></script>
 
     <script>
       // Theme toggle (default is dark/space theme)
