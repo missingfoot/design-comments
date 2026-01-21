@@ -23,11 +23,12 @@ function inlineCss(): Plugin {
         delete bundle[fileName];
       }
 
-      // Inject CSS into JS
+      // Export CSS as variable for shadow DOM injection
       if (cssContent) {
         for (const chunk of Object.values(bundle)) {
           if (chunk.type === 'chunk' && chunk.isEntry) {
-            const cssCode = `(function(){var style=document.createElement('style');style.textContent=${JSON.stringify(cssContent)};document.head.appendChild(style);})();`;
+            // Define CSS as a variable at the top of the bundle
+            const cssCode = `var __DESIGN_COMMENTS_CSS__=${JSON.stringify(cssContent)};`;
             chunk.code = cssCode + chunk.code;
           }
         }

@@ -611,7 +611,12 @@
         align-items: center;
         justify-content: center;
         margin-bottom: 16px;
-        font-size: 20px;
+      }
+
+      .feature-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: white;
       }
 
       .feature h3 {
@@ -758,32 +763,44 @@
 
         <div class="features">
           <div class="feature">
-            <div class="feature-icon">📍</div>
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
             <h3>Click to Comment</h3>
             <p>Click anywhere on the page to pin a comment. Comments stay anchored even when elements move.</p>
           </div>
           <div class="feature">
-            <div class="feature-icon">💬</div>
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
             <h3>Threaded Replies</h3>
             <p>Reply to comments and keep conversations organized. Resolve threads when feedback is addressed.</p>
           </div>
           <div class="feature">
-            <div class="feature-icon">⌨️</div>
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" ry="2"/><path d="M6 8h.001"/><path d="M10 8h.001"/><path d="M14 8h.001"/><path d="M18 8h.001"/><path d="M8 12h.001"/><path d="M12 12h.001"/><path d="M16 12h.001"/><path d="M7 16h10"/></svg>
+            </div>
             <h3>Keyboard Shortcuts</h3>
             <p>Press C to toggle comment mode. Quick and efficient for power users.</p>
           </div>
           <div class="feature">
-            <div class="feature-icon">🔄</div>
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+            </div>
             <h3>Real-time Sync</h3>
             <p>Comments sync instantly across all viewers. No refresh needed.</p>
           </div>
           <div class="feature">
-            <div class="feature-icon">🎯</div>
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></svg>
+            </div>
             <h3>Smart Positioning</h3>
             <p>Popovers automatically flip and adjust to stay visible within the viewport.</p>
           </div>
           <div class="feature">
-            <div class="feature-icon">👻</div>
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+            </div>
             <h3>Hidden Element Detection</h3>
             <p>Comments hide when their target element is hidden (modals, accordions, etc).</p>
           </div>

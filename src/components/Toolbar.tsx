@@ -20,37 +20,37 @@ export function Toolbar({
   return (
     <div
       data-design-comments="toolbar"
-      className={`dc-fixed dc-bottom-4 dc-left-1/2 dc--translate-x-1/2 dc-flex dc-items-center dc-gap-2 dc-rounded-full dc-shadow-xl dc-border dc-px-2 dc-py-1.5 dc-z-[10000] ${
-        darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
+      className={`fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-full shadow-xl border px-2 py-1.5 z-[10000] ${
+        darkMode ? "bg-neutral-900 border-neutral-700" : "bg-white border-neutral-200"
       }`}
     >
       {/* User avatar */}
       <div
-        className="dc-w-7 dc-h-7 dc-rounded-full dc-flex dc-items-center dc-justify-center dc-text-white dc-text-xs dc-font-medium"
+        className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-medium"
         style={{ backgroundColor: user.color }}
         title={user.name}
       >
         {user.name[0].toUpperCase()}
       </div>
 
-      <div className={`dc-w-px dc-h-6 ${darkMode ? "dc-bg-neutral-600" : "dc-bg-neutral-200"}`} />
+      <div className={`w-px h-6 ${darkMode ? "bg-neutral-600" : "bg-neutral-200"}`} />
 
       {/* Comment mode toggle */}
       <button
         onClick={onToggleCommentMode}
-        className={`dc-flex dc-items-center dc-gap-2 dc-px-3 dc-py-1.5 dc-rounded-full dc-text-sm dc-font-medium ${
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${
           commentMode
             ? darkMode
-              ? "dc-bg-white dc-text-neutral-900"
-              : "dc-bg-neutral-900 dc-text-white"
+              ? "bg-white text-neutral-900"
+              : "bg-neutral-900 text-white"
             : darkMode
-              ? "dc-text-neutral-300 hover:dc-bg-neutral-700"
-              : "dc-text-neutral-700 hover:dc-bg-neutral-100"
+              ? "text-neutral-300 hover:bg-neutral-700"
+              : "text-neutral-700 hover:bg-neutral-100"
         }`}
         title="Add comment (C)"
       >
         <svg
-          className="dc-w-4 dc-h-4"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -65,24 +65,24 @@ export function Toolbar({
         Comment
       </button>
 
-      <div className={`dc-w-px dc-h-6 ${darkMode ? "dc-bg-neutral-600" : "dc-bg-neutral-200"}`} />
+      <div className={`w-px h-6 ${darkMode ? "bg-neutral-600" : "bg-neutral-200"}`} />
 
       {/* Sidebar toggle */}
       <button
         onClick={onToggleSidebar}
-        className={`dc-p-2 dc-rounded-full ${
+        className={`p-2 rounded-full ${
           sidebarOpen
             ? darkMode
-              ? "dc-bg-white dc-text-neutral-900"
-              : "dc-bg-neutral-900 dc-text-white"
+              ? "bg-white text-neutral-900"
+              : "bg-neutral-900 text-white"
             : darkMode
-              ? "dc-text-neutral-300 hover:dc-bg-neutral-700"
-              : "dc-text-neutral-700 hover:dc-bg-neutral-100"
+              ? "text-neutral-300 hover:bg-neutral-700"
+              : "text-neutral-700 hover:bg-neutral-100"
         }`}
         title={sidebarOpen ? "Hide sidebar" : "Show sidebar"}
       >
         <svg
-          className="dc-w-4 dc-h-4"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

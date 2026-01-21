@@ -5,8 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design Comments - Test Page</title>
     <style>
+      /*
+        Aggressive styles to test Shadow DOM isolation.
+        These should NOT affect the comment overlay UI.
+      */
+
+      /* Global resets that would normally break embeds */
+      * {
+        box-sizing: border-box;
+        font-family: Georgia, serif !important; /* Should NOT affect embed */
+      }
+
+      button {
+        background: red !important; /* Should NOT affect embed buttons */
+        color: yellow !important;
+        border: 5px dashed green !important;
+      }
+
+      input, textarea {
+        background: purple !important; /* Should NOT affect embed inputs */
+        color: lime !important;
+      }
+
       /* Base styles */
-      * { box-sizing: border-box; }
       body {
         font-family: system-ui, -apple-system, sans-serif;
         margin: 0;
@@ -418,7 +439,13 @@
       });
     </script>
 
-    <!-- Design Comments - Local dev version -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!--
+      Dev mode (HMR, no Shadow DOM):
+      <script type="module" src="/src/main.tsx"></script>
+
+      Production mode (Shadow DOM isolation - run 'npm run build' first):
+      <script src="/dist/embed.iife.js"></script>
+    -->
+    <script src="/dist/embed.iife.js"></script>
   </body>
 </html>

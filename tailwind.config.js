@@ -7,6 +7,5 @@ export default {
     extend: {},
   },
   plugins: [],
-  // Prefix to avoid conflicts with host page styles
-  prefix: 'dc-',
+  // No prefix needed - Shadow DOM provides style isolation
 }

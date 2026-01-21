@@ -45,8 +45,8 @@ export function CommentPopover({
 
   // Build position classes based on calculated position
   const horizontalClass = position.side === "right"
-    ? "dc-left-full dc-ml-2"
-    : "dc-right-full dc-mr-2";
+    ? "left-full ml-2"
+    : "right-full mr-2";
 
   // Vertical positioning: bottom: 0 anchors popover bottom at pin, so it grows upward
   const verticalStyle = position.above
@@ -56,8 +56,8 @@ export function CommentPopover({
   return (
     <div
       data-design-comments="popover"
-      className={`dc-absolute ${horizontalClass} dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
-        darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
+      className={`absolute ${horizontalClass} w-72 rounded-lg shadow-xl border overflow-hidden z-[10002] ${
+        darkMode ? "bg-neutral-900 border-neutral-700" : "bg-white border-neutral-200"
       }`}
       style={verticalStyle}
       onClick={(e) => e.stopPropagation()}
@@ -65,7 +65,7 @@ export function CommentPopover({
       onMouseLeave={onMouseLeave}
     >
       {/* Thread content */}
-      <div className={`dc-max-h-64 dc-overflow-y-auto ${darkMode ? "dc-scrollbar-thin-dark" : "dc-scrollbar-thin"}`}>
+      <div className={`max-h-64 overflow-y-auto ${darkMode ? "scrollbar-thin-dark" : "scrollbar-thin"}`}>
         <CommentItem comment={thread} darkMode={darkMode} />
         {thread.replies.map((reply) => (
           <CommentItem key={reply.id} comment={reply} isReply darkMode={darkMode} />
@@ -73,8 +73,8 @@ export function CommentPopover({
       </div>
 
       {/* Reply section */}
-      <div className={`dc-border-t dc-px-3 dc-py-3 ${
-        darkMode ? "dc-border-neutral-700" : "dc-border-neutral-100"
+      <div className={`border-t px-3 py-3 ${
+        darkMode ? "border-neutral-700" : "border-neutral-100"
       }`}>
         <CommentInput
           onSubmit={handleReply}
@@ -103,31 +103,31 @@ function CommentItem({
 }) {
   return (
     <div
-      className={`dc-p-3 ${
+      className={`p-3 ${
         isReply
           ? darkMode
-            ? "dc-border-t dc-border-neutral-700"
-            : "dc-border-t dc-border-neutral-100"
+            ? "border-t border-neutral-700"
+            : "border-t border-neutral-100"
           : ""
-      } ${comment.resolved ? "dc-opacity-60" : ""}`}
+      } ${comment.resolved ? "opacity-60" : ""}`}
     >
-      <div className="dc-flex dc-items-center dc-justify-between dc-mb-1">
-        <div className="dc-flex dc-items-center dc-gap-2">
+      <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center gap-2">
           <div
-            className="dc-w-5 dc-h-5 dc-rounded-full dc-flex dc-items-center dc-justify-center dc-text-white dc-text-xs"
+            className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs"
             style={{ backgroundColor: comment.authorColor }}
           >
             {comment.author[0].toUpperCase()}
           </div>
-          <span className={`dc-text-sm dc-font-medium ${darkMode ? "dc-text-white" : "dc-text-neutral-900"}`}>
+          <span className={`text-sm font-medium ${darkMode ? "text-white" : "text-neutral-900"}`}>
             {comment.author}
           </span>
         </div>
-        <span className={`dc-text-xs ${darkMode ? "dc-text-neutral-500" : "dc-text-neutral-400"}`}>
+        <span className={`text-xs ${darkMode ? "text-neutral-500" : "text-neutral-400"}`}>
           {formatRelativeTime(comment.createdAt)}
         </span>
       </div>
-      <p className={`dc-text-sm dc-whitespace-pre-wrap ${darkMode ? "dc-text-neutral-300" : "dc-text-neutral-700"}`}>
+      <p className={`text-sm whitespace-pre-wrap ${darkMode ? "text-neutral-300" : "text-neutral-700"}`}>
         {comment.content}
       </p>
     </div>

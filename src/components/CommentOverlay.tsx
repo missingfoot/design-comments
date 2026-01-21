@@ -15,12 +15,12 @@ export function CommentOverlay() {
   const [user, setUser] = useState<User | null>(getUser);
   const [commentMode, setCommentMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(() => {
-    const saved = localStorage.getItem("dc-sidebar-open");
+    const saved = localStorage.getItem("sidebar-open");
     return saved === "true"; // Default to closed (false)
   });
   const [sidebarPosition, setSidebarPosition] = useState<"left" | "right">("right");
   const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem("dc-dark-mode");
+    const saved = localStorage.getItem("dark-mode");
     return saved === "true";
   });
   const [pendingAnchor, setPendingAnchor] = useState<{
@@ -41,12 +41,12 @@ export function CommentOverlay() {
 
   // Persist dark mode preference
   useEffect(() => {
-    localStorage.setItem("dc-dark-mode", String(darkMode));
+    localStorage.setItem("dark-mode", String(darkMode));
   }, [darkMode]);
 
   // Persist sidebar state
   useEffect(() => {
-    localStorage.setItem("dc-sidebar-open", String(sidebarOpen));
+    localStorage.setItem("sidebar-open", String(sidebarOpen));
   }, [sidebarOpen]);
 
   // Keyboard shortcut: Press 'C' to toggle comment mode
@@ -177,7 +177,7 @@ export function CommentOverlay() {
         <div
           data-design-comments="capture"
           onClick={handlePageClick}
-          className="dc-fixed dc-inset-0 dc-z-[9998]"
+          className="fixed inset-0 z-[9998]"
         />
       )}
 
@@ -273,7 +273,7 @@ function PendingCommentPin({
   const showAbove = spaceBelow < MIN_SPACE_BELOW && spaceAbove > spaceBelow;
 
   // Popover positioning classes and styles
-  const horizontalClass = showOnLeft ? "dc-right-full dc-mr-2" : "dc-left-full dc-ml-2";
+  const horizontalClass = showOnLeft ? "right-full mr-2" : "left-full ml-2";
   const verticalStyle = showAbove
     ? { bottom: 0 } // popover grows upward from pin
     : { top: 0 }; // popover grows downward from pin
@@ -281,7 +281,7 @@ function PendingCommentPin({
   return (
     <div
       data-design-comments="pending-pin"
-      className="dc-fixed dc-pointer-events-auto dc-z-[10003]"
+      className="fixed pointer-events-auto z-[10003]"
       style={{
         left: position.x,
         top: position.y,
@@ -290,7 +290,7 @@ function PendingCommentPin({
     >
       {/* Pin marker - same style as existing pins */}
       <div
-        className="dc-w-7 dc-h-7 dc-rounded-full dc-flex dc-items-center dc-justify-center dc-text-white dc-text-xs dc-font-medium dc-shadow-lg dc-border-2 dc-border-white dc-scale-110"
+        className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-medium shadow-lg border-2 border-white scale-110"
         style={{ backgroundColor: userColor }}
       >
         {pinNumber}
@@ -299,13 +299,13 @@ function PendingCommentPin({
       {/* Input popover - same style as comment popover */}
       <div
         data-design-comments="popover"
-        className={`dc-absolute ${horizontalClass} dc-w-72 dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden dc-z-[10002] ${
-          darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
+        className={`absolute ${horizontalClass} w-72 rounded-lg shadow-xl border overflow-hidden z-[10002] ${
+          darkMode ? "bg-neutral-900 border-neutral-700" : "bg-white border-neutral-200"
         }`}
         style={verticalStyle}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="dc-p-3">
+        <div className="p-3">
           <CommentInput
             onSubmit={onSubmit}
             onCancel={onCancel}

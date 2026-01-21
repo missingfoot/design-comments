@@ -53,23 +53,23 @@ export function CommentInput({
   };
 
   const baseClass = inline
-    ? "dc-w-full"
-    : `dc-rounded-lg dc-shadow-xl dc-border dc-overflow-hidden ${
-        compact ? "dc-w-full" : "dc-w-72"
-      } ${darkMode ? "dc-bg-neutral-900 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"}`;
+    ? "w-full"
+    : `rounded-lg shadow-xl border overflow-hidden ${
+        compact ? "w-full" : "w-72"
+      } ${darkMode ? "bg-neutral-900 border-neutral-700" : "bg-white border-neutral-200"}`;
 
   // Collapsed state - show placeholder text that expands on click
   if (collapsed) {
     return (
       <div
         data-design-comments="comment-input"
-        className="dc-w-full dc-cursor-text"
+        className="w-full cursor-text"
         onClick={(e) => {
           e.stopPropagation();
           onExpand?.();
         }}
       >
-        <div className={`dc-text-sm ${darkMode ? "dc-text-neutral-500 hover:dc-text-neutral-300" : "dc-text-neutral-400 hover:dc-text-neutral-600"}`}>
+        <div className={`text-sm ${darkMode ? "text-neutral-500 hover:text-neutral-300" : "text-neutral-400 hover:text-neutral-600"}`}>
           Reply...
         </div>
       </div>
@@ -89,30 +89,30 @@ export function CommentInput({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         rows={compact ? 2 : 3}
-        className={`dc-w-full dc-text-sm dc-resize-none dc-border-none dc-outline-none dc-leading-normal dc-max-h-32 dc-overflow-y-auto ${
-          darkMode ? "dc-scrollbar-thin-dark" : "dc-scrollbar-thin"
+        className={`w-full text-sm resize-none border-none outline-none leading-normal max-h-32 overflow-y-auto ${
+          darkMode ? "scrollbar-thin-dark" : "scrollbar-thin"
         } ${
-          inline ? "dc-p-0 dc-bg-transparent" : darkMode ? "dc-p-3 dc-bg-neutral-900" : "dc-p-3 dc-bg-white"
-        } ${darkMode ? "dc-text-white dc-placeholder-neutral-500" : "dc-text-neutral-900 dc-placeholder-neutral-400"}`}
+          inline ? "p-0 bg-transparent" : darkMode ? "p-3 bg-neutral-900" : "p-3 bg-white"
+        } ${darkMode ? "text-white placeholder-neutral-500" : "text-neutral-900 placeholder-neutral-400"}`}
       />
-      <div className={`dc-flex dc-items-center dc-gap-2 ${
+      <div className={`flex items-center gap-2 ${
         inline
-          ? "dc-pt-2"
-          : `dc-justify-end dc-px-3 dc-py-2 dc-border-t ${
-              darkMode ? "dc-bg-neutral-800 dc-border-neutral-700" : "dc-bg-neutral-50 dc-border-neutral-200"
+          ? "pt-2"
+          : `justify-end px-3 py-2 border-t ${
+              darkMode ? "bg-neutral-800 border-neutral-700" : "bg-neutral-50 border-neutral-200"
             }`
       }`}>
-        <div className={`dc-flex dc-gap-2 ${inline ? "dc-ml-auto" : ""}`}>
+        <div className={`flex gap-2 ${inline ? "ml-auto" : ""}`}>
           <button
             onClick={onCancel}
-            className={`dc-px-2 dc-py-1 dc-text-sm ${darkMode ? "dc-text-neutral-400 hover:dc-text-neutral-200" : "dc-text-neutral-500 hover:dc-text-neutral-700"}`}
+            className={`px-2 py-1 text-sm ${darkMode ? "text-neutral-400 hover:text-neutral-200" : "text-neutral-500 hover:text-neutral-700"}`}
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={!content.trim()}
-            className="dc-px-3 dc-py-1 dc-text-sm dc-bg-blue-500 dc-text-white dc-rounded dc-disabled:opacity-50 hover:dc-bg-blue-600"
+            className="px-3 py-1 text-sm bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-600"
           >
             {submitLabel}
           </button>

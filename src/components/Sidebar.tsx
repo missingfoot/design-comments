@@ -74,24 +74,24 @@ export function Sidebar({
   return (
     <div
       data-design-comments="sidebar"
-      className={`dc-fixed dc-top-4 dc-bottom-4 dc-w-80 dc-rounded-lg dc-shadow-2xl dc-border dc-flex dc-flex-col dc-z-[10000] ${
-        position === "right" ? "dc-right-4" : "dc-left-4"
+      className={`fixed top-4 bottom-4 w-80 rounded-lg shadow-2xl border flex flex-col z-[10000] ${
+        position === "right" ? "right-4" : "left-4"
       } ${
         darkMode
-          ? "dc-bg-neutral-900 dc-border-neutral-700"
-          : "dc-bg-white dc-border-neutral-200"
+          ? "bg-neutral-900 border-neutral-700"
+          : "bg-white border-neutral-200"
       }`}
       onClick={() => setContextMenu(null)}
     >
       {/* Header */}
-      <div className="dc-flex dc-items-center dc-justify-between dc-px-4 dc-py-3">
-        <h2 className={`dc-font-semibold ${darkMode ? "dc-text-white" : "dc-text-neutral-900"}`}>Comments</h2>
+      <div className="flex items-center justify-between px-4 py-3">
+        <h2 className={`font-semibold ${darkMode ? "text-white" : "text-neutral-900"}`}>Comments</h2>
         <button
           onClick={onClose}
-          className={`dc-p-1 ${darkMode ? "dc-text-neutral-400 hover:dc-text-neutral-200" : "dc-text-neutral-400 hover:dc-text-neutral-600"}`}
+          className={`p-1 ${darkMode ? "text-neutral-400 hover:text-neutral-200" : "text-neutral-400 hover:text-neutral-600"}`}
         >
           <svg
-            className="dc-w-5 dc-h-5"
+            className="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -107,8 +107,8 @@ export function Sidebar({
       </div>
 
       {/* Filter tabs */}
-      <div className={`dc-flex dc-gap-1 dc-px-4 dc-pb-2 dc-border-b ${
-        darkMode ? "dc-border-neutral-700" : "dc-border-neutral-200"
+      <div className={`flex gap-1 px-4 pb-2 border-b ${
+        darkMode ? "border-neutral-700" : "border-neutral-200"
       }`}>
         <FilterTab
           active={filter === "all"}
@@ -134,9 +134,9 @@ export function Sidebar({
       </div>
 
       {/* Comment list */}
-      <div className={`dc-flex-1 dc-overflow-y-auto ${darkMode ? "dc-scrollbar-thin-dark" : "dc-scrollbar-thin"}`}>
+      <div className={`flex-1 overflow-y-auto ${darkMode ? "scrollbar-thin-dark" : "scrollbar-thin"}`}>
         {filteredThreads.length === 0 ? (
-          <div className={`dc-p-8 dc-text-center dc-text-sm ${darkMode ? "dc-text-neutral-500" : "dc-text-neutral-400"}`}>
+          <div className={`p-8 text-center text-sm ${darkMode ? "text-neutral-500" : "text-neutral-400"}`}>
             {filter === "all"
               ? "No comments yet. Click the + button to add one!"
               : `No ${filter} comments`}
@@ -150,46 +150,46 @@ export function Sidebar({
                 key={thread.id}
                 onClick={() => onSelect(thread.id)}
                 onContextMenu={(e) => handleContextMenu(e, thread)}
-                className={`dc-w-full dc-text-left dc-p-4 ${isLast ? "" : "dc-border-b"} ${
+                className={`w-full text-left p-4 ${isLast ? "" : "border-b"} ${
                   darkMode
-                    ? `dc-border-neutral-700 ${selectedId === thread.id ? "dc-bg-slate-800" : "hover:dc-bg-neutral-700"}`
-                    : `dc-border-neutral-100 ${selectedId === thread.id ? "dc-bg-blue-50" : "hover:dc-bg-neutral-50"}`
+                    ? `border-neutral-700 ${selectedId === thread.id ? "bg-slate-800" : "hover:bg-neutral-700"}`
+                    : `border-neutral-100 ${selectedId === thread.id ? "bg-blue-50" : "hover:bg-neutral-50"}`
                 }`}
               >
-                <div className="dc-flex dc-items-start dc-gap-3">
+                <div className="flex items-start gap-3">
                   <div
-                    className="dc-w-6 dc-h-6 dc-rounded-full dc-flex dc-items-center dc-justify-center dc-text-white dc-text-xs dc-font-medium dc-flex-shrink-0"
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-medium flex-shrink-0"
                     style={{ backgroundColor: thread.authorColor }}
                   >
                     {commentNumber}
                   </div>
-                  <div className="dc-flex-1 dc-min-w-0">
-                    <div className="dc-flex dc-items-center dc-justify-between dc-mb-1">
-                      <div className="dc-flex dc-items-center dc-gap-2">
-                        <span className={`dc-font-medium dc-text-sm ${darkMode ? "dc-text-white" : "dc-text-neutral-900"}`}>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        <span className={`font-medium text-sm ${darkMode ? "text-white" : "text-neutral-900"}`}>
                           {thread.author}
                         </span>
                         {thread.resolved && (
-                          <span className={`dc-text-xs dc-px-1.5 dc-rounded ${
-                            darkMode ? "dc-text-green-400 dc-bg-green-900" : "dc-text-green-600 dc-bg-green-100"
+                          <span className={`text-xs px-1.5 rounded ${
+                            darkMode ? "text-green-400 bg-green-900" : "text-green-600 bg-green-100"
                           }`}>
                             ✓
                           </span>
                         )}
                       </div>
-                      <span className={`dc-text-xs ${darkMode ? "dc-text-neutral-500" : "dc-text-neutral-400"}`}>
+                      <span className={`text-xs ${darkMode ? "text-neutral-500" : "text-neutral-400"}`}>
                         {formatRelativeTime(thread.createdAt)}
                       </span>
                     </div>
                     <p
-                      className={`dc-text-sm dc-line-clamp-2 ${
-                        thread.resolved ? "dc-line-through dc-opacity-60" : ""
-                      } ${darkMode ? "dc-text-neutral-400" : "dc-text-neutral-600"}`}
+                      className={`text-sm line-clamp-2 ${
+                        thread.resolved ? "line-through opacity-60" : ""
+                      } ${darkMode ? "text-neutral-400" : "text-neutral-600"}`}
                     >
                       {thread.content}
                     </p>
                     {thread.replies.length > 0 && (
-                      <span className={`dc-text-xs dc-mt-1 dc-block ${darkMode ? "dc-text-neutral-500" : "dc-text-neutral-400"}`}>
+                      <span className={`text-xs mt-1 block ${darkMode ? "text-neutral-500" : "text-neutral-400"}`}>
                         {thread.replies.length}{" "}
                         {thread.replies.length === 1 ? "reply" : "replies"}
                       </span>
@@ -203,20 +203,20 @@ export function Sidebar({
       </div>
 
       {/* Footer with position toggle and dark mode */}
-      <div className={`dc-flex dc-items-center dc-justify-between dc-px-2 dc-py-2 dc-border-t dc-rounded-b-lg ${
-        darkMode ? "dc-bg-neutral-800 dc-border-neutral-700" : "dc-bg-neutral-50 dc-border-neutral-200"
+      <div className={`flex items-center justify-between px-2 py-2 border-t rounded-b-lg ${
+        darkMode ? "bg-neutral-800 border-neutral-700" : "bg-neutral-50 border-neutral-200"
       }`}>
         <button
           onClick={onTogglePosition}
-          className={`dc-flex dc-items-center dc-gap-2 dc-px-2 dc-py-1.5 dc-text-sm dc-rounded ${
+          className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded ${
             darkMode
-              ? "dc-text-neutral-300 hover:dc-text-white hover:dc-bg-neutral-700"
-              : "dc-text-neutral-700 hover:dc-text-neutral-900 hover:dc-bg-neutral-200"
-          } ${position === "right" ? "" : "dc-order-2"}`}
+              ? "text-neutral-300 hover:text-white hover:bg-neutral-700"
+              : "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-200"
+          } ${position === "right" ? "" : "order-2"}`}
         >
           {position === "right" ? (
             <>
-              <svg className="dc-w-4 dc-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Dock left
@@ -224,7 +224,7 @@ export function Sidebar({
           ) : (
             <>
               Dock right
-              <svg className="dc-w-4 dc-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </>
@@ -232,19 +232,19 @@ export function Sidebar({
         </button>
         <button
           onClick={onToggleDarkMode}
-          className={`dc-p-2 dc-rounded ${
+          className={`p-2 rounded ${
             darkMode
-              ? "dc-text-neutral-300 hover:dc-text-white hover:dc-bg-neutral-700"
-              : "dc-text-neutral-700 hover:dc-text-neutral-900 hover:dc-bg-neutral-200"
-          } ${position === "right" ? "" : "dc-order-1"}`}
+              ? "text-neutral-300 hover:text-white hover:bg-neutral-700"
+              : "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-200"
+          } ${position === "right" ? "" : "order-1"}`}
           title={darkMode ? "Light mode" : "Dark mode"}
         >
           {darkMode ? (
-            <svg className="dc-w-4 dc-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           ) : (
-            <svg className="dc-w-4 dc-h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           )}
@@ -255,24 +255,24 @@ export function Sidebar({
       {contextMenu && (
         <div
           data-design-comments="context-menu"
-          className={`dc-fixed dc-rounded-lg dc-shadow-xl dc-border dc-py-1 dc-z-[10001] ${
-            darkMode ? "dc-bg-neutral-800 dc-border-neutral-700" : "dc-bg-white dc-border-neutral-200"
+          className={`fixed rounded-lg shadow-xl border py-1 z-[10001] ${
+            darkMode ? "bg-neutral-800 border-neutral-700" : "bg-white border-neutral-200"
           }`}
           style={{ left: contextMenu.x, top: contextMenu.y }}
           onClick={(e) => e.stopPropagation()}
         >
           <button
             onClick={handleResolve}
-            className={`dc-w-full dc-px-4 dc-py-2 dc-text-left dc-text-sm ${
-              darkMode ? "dc-text-neutral-300 hover:dc-bg-neutral-700" : "dc-text-neutral-700 hover:dc-bg-neutral-50"
+            className={`w-full px-4 py-2 text-left text-sm ${
+              darkMode ? "text-neutral-300 hover:bg-neutral-700" : "text-neutral-700 hover:bg-neutral-50"
             }`}
           >
             {contextMenu.resolved ? "Reopen" : "Resolve"}
           </button>
           <button
             onClick={handleDelete}
-            className={`dc-w-full dc-px-4 dc-py-2 dc-text-left dc-text-sm ${
-              darkMode ? "dc-text-red-400 hover:dc-bg-neutral-700" : "dc-text-red-600 hover:dc-bg-red-50"
+            className={`w-full px-4 py-2 text-left text-sm ${
+              darkMode ? "text-red-400 hover:bg-neutral-700" : "text-red-600 hover:bg-red-50"
             }`}
           >
             Delete
@@ -299,26 +299,26 @@ function FilterTab({
   return (
     <button
       onClick={onClick}
-      className={`dc-flex dc-items-center dc-gap-1.5 dc-px-3 dc-py-1 dc-text-sm dc-rounded-full ${
+      className={`flex items-center gap-1.5 px-3 py-1 text-sm rounded-full ${
         active
           ? darkMode
-            ? "dc-bg-white dc-text-neutral-900"
-            : "dc-bg-neutral-900 dc-text-white"
+            ? "bg-white text-neutral-900"
+            : "bg-neutral-900 text-white"
           : darkMode
-            ? "dc-text-neutral-400 hover:dc-bg-neutral-700"
-            : "dc-text-neutral-600 hover:dc-bg-neutral-100"
+            ? "text-neutral-400 hover:bg-neutral-700"
+            : "text-neutral-600 hover:bg-neutral-100"
       }`}
     >
       {label}
       <span
-        className={`dc-px-1.5 dc-py-0.5 dc-text-xs dc-rounded-full dc-min-w-[20px] dc-text-center ${
+        className={`px-1.5 py-0.5 text-xs rounded-full min-w-[20px] text-center ${
           active
             ? darkMode
-              ? "dc-bg-neutral-900/20 dc-text-neutral-900"
-              : "dc-bg-white/20 dc-text-white"
+              ? "bg-neutral-900/20 text-neutral-900"
+              : "bg-white/20 text-white"
             : darkMode
-              ? "dc-bg-neutral-700 dc-text-neutral-300"
-              : "dc-bg-neutral-200 dc-text-neutral-600"
+              ? "bg-neutral-700 text-neutral-300"
+              : "bg-neutral-200 text-neutral-600"
         }`}
       >
         {count}

@@ -13,7 +13,7 @@ export interface PopoverPosition {
   above: boolean; // if true, popover appears above the pin using translateY(-100%)
 }
 
-const POPOVER_WIDTH = 288; // dc-w-72 = 18rem = 288px
+const POPOVER_WIDTH = 288; // w-72 = 18rem = 288px
 const MARGIN = 16; // margin from viewport edges
 const MIN_SPACE_BELOW = 200; // minimum space needed below before flipping above
 
@@ -150,7 +150,7 @@ export function CommentPins({
   }, [selectedId, onSelect]);
 
   return (
-    <div ref={containerRef} data-design-comments="pins" className="dc-pointer-events-none">
+    <div ref={containerRef} data-design-comments="pins" className="pointer-events-none">
       {threads.map((thread, index) => {
         const pos = positions.get(thread.id);
         // Don't render pin if position not calculated yet or element not found/visible
@@ -165,7 +165,7 @@ export function CommentPins({
           <div
             key={thread.id}
             data-design-comments="pin"
-            className={`dc-fixed dc-pointer-events-auto ${showPopover ? "dc-z-[10003]" : "dc-z-[9999]"}`}
+            className={`fixed pointer-events-auto ${showPopover ? "z-[10003]" : "z-[9999]"}`}
             style={{
               left: pos.x,
               top: pos.y - window.scrollY,
@@ -178,11 +178,11 @@ export function CommentPins({
               onMouseEnter={() => handleMouseEnterPin(thread.id)}
               onMouseLeave={() => handleMouseLeavePin(thread.id)}
               className={`
-                dc-w-7 dc-h-7 dc-rounded-full dc-flex dc-items-center dc-justify-center
-                dc-text-white dc-text-xs dc-font-medium dc-shadow-lg
-                dc-transition-transform dc-cursor-pointer dc-border-2 dc-border-white
-                ${isSelected ? "dc-scale-110" : "hover:dc-scale-105"}
-                ${thread.resolved ? "dc-opacity-50" : ""}
+                w-7 h-7 rounded-full flex items-center justify-center
+                text-white text-xs font-medium shadow-lg
+                transition-transform cursor-pointer border-2 border-white
+                ${isSelected ? "scale-110" : "hover:scale-105"}
+                ${thread.resolved ? "opacity-50" : ""}
               `}
               style={{ backgroundColor: thread.authorColor }}
               title={`#${commentNumber} - ${thread.author}: ${thread.content.slice(0, 50)}...`}
